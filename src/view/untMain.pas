@@ -73,6 +73,8 @@ type
     procedure mecepExit(Sender: TObject);
   private
     FCadastroSimples: TCadastroSimples;
+    procedure LimparDados;
+    procedure ModoEdicao(const Sim: boolean = false);
   public
     function  ValidateFields: boolean;
   end;
@@ -88,151 +90,39 @@ uses
 {$R *.dfm}
 
 function TForm1.ValidateFields: boolean;
+var
+  i: integer;
+  mascara: string;
+  procedure Validado(const oComponente: TCustomEdit);
+  begin
+    ShowMessage('O campo ' + (oComponente as TCustomEdit).HelpKeyword + ' é de preenchimento obrigatório.');
+    (oComponente as TCustomEdit).SetFocus;
+  end;
 begin
-    if trim ( ednome.text ) = '' then
-       begin
-          MessageBox( handle , 'Nome Deve Ser Preenchido' ,
-                               'Erro de Preenchimento de Campo'   ,
-                               mb_ok+mb_iconstop );
-          ednome.setfocus;
-          Result := false;
-          exit;
-       end;
-    Result := true ;
+  Result  :=  True;
 
-
-    if trim ( edrg.text ) = '' then
-       begin
-          MessageBox( handle , 'RG Deve Ser Preenchido' ,
-                               'Erro de Preenchimento de Campo'   ,
-                               mb_ok+mb_iconstop );
-          edrg.setfocus;
-          Result := false;
-          exit;
-       end;
-    Result := true ;
-
-    if trim ( mecpf.text ) = '' then
-       begin
-          MessageBox( handle , 'CPF Deve Ser Preenchido' ,
-                               'Erro de Preenchimento de Campo'   ,
-                               mb_ok+mb_iconstop );
-          mecpf.setfocus;
-          Result := false;
-          exit;
-       end;
-    Result := true ;
-
-    if trim ( mefone1.text ) = '' then
-       begin
-          MessageBox( handle , 'Telefone Deve Ser Preenchido' ,
-                               'Erro de Preenchimento de Campo'   ,
-                               mb_ok+mb_iconstop );
-          mefone1.setfocus;
-          Result := false;
-          exit;
-       end;
-    Result := true ;
-
-    if trim ( Edemail.text ) = '' then
-       begin
-          MessageBox( handle , 'E-mail Deve Ser Preenchido' ,
-                               'Erro de Preenchimento de Campo'   ,
-                               mb_ok+mb_iconstop );
-          Edemail.setfocus;
-          Result := false;
-          exit;
-       end;
-    Result := true ;
-
-    if trim ( mecep.text ) = '' then
-       begin
-          MessageBox( handle , 'CEP Deve Ser Preenchido' ,
-                               'Erro de Preenchimento de Campo'   ,
-                               mb_ok+mb_iconstop );
-          mecep.setfocus;
-          Result := false;
-          exit;
-       end;
-    Result := true ;
-
-    if trim ( EdEndereco.text ) = '' then
-       begin
-          MessageBox( handle , 'Logradouro Deve Ser Preenchido' ,
-                               'Erro de Preenchimento de Campo'   ,
-                               mb_ok+mb_iconstop );
-          EdEndereco.setfocus;
-          Result := false;
-          exit;
-       end;
-    Result := true ;
-
-    if trim ( ednr.text ) = '' then
-       begin
-          MessageBox( handle , 'Número Deve Ser Preenchido' ,
-                               'Erro de Preenchimento de Campo'   ,
-                               mb_ok+mb_iconstop );
-          ednr.setfocus;
-          Result := false;
-          exit;
-       end;
-    Result := true ;
-
-    if trim ( edcomplemento.text ) = '' then
-       begin
-          MessageBox( handle , 'Complemento Deve Ser Preenchido' ,
-                               'Erro de Preenchimento de Campo'   ,
-                               mb_ok+mb_iconstop );
-          edcomplemento.setfocus;
-          Result := false;
-          exit;
-       end;
-    Result := true ;
-
-    if trim ( EdBairro.text ) = '' then
-       begin
-          MessageBox( handle , 'Bairro Deve Ser Preenchido' ,
-                               'Erro de Preenchimento de Campo'   ,
-                               mb_ok+mb_iconstop );
-          EdBairro.setfocus;
-          Result := false;
-          exit;
-       end;
-    Result := true ;
-
-    if trim ( EdCidade.text ) = '' then
-       begin
-          MessageBox( handle , 'Cidade Deve Ser Preenchido' ,
-                               'Erro de Preenchimento de Campo'   ,
-                               mb_ok+mb_iconstop );
-          EdCidade.setfocus;
-          Result := false;
-          exit;
-       end;
-    Result := true ;
-
-    if trim ( edestado.text ) = '' then
-       begin
-          MessageBox( handle , 'Estado Deve Ser Preenchido' ,
-                               'Erro de Preenchimento de Campo'   ,
-                               mb_ok+mb_iconstop );
-          edestado.setfocus;
-          Result := false;
-          exit;
-       end;
-    Result := true ;
-
-    if trim ( edpais.text ) = '' then
-       begin
-          MessageBox( handle , 'País Deve Ser Preenchido' ,
-                               'Erro de Preenchimento de Campo'   ,
-                               mb_ok+mb_iconstop );
-          edpais.setfocus;
-          Result := false;
-          exit;
-       end;
-    Result := true ;
-
+  for i := 0 to ComponentCount - 1 do
+    if ((Components[i] is TMaskEdit) and ((Components[i] as TMaskEdit).Tag = 0)) then
+      try
+        mascara :=  TMaskEdit(Components[i]).EditMask;
+        TMaskEdit(Components[i]).EditMask :=  '';
+        if (Trim(TMaskEdit(Components[i]).Text) = '') then
+        begin
+          Result  :=  False;
+          Validado(TMaskEdit(Components[i]));
+          Break;
+        end;
+      finally
+        TMaskEdit(Components[i]).EditMask :=  mascara;
+      end
+    else
+    if Components[i] is TCustomEdit then
+      if ((Components[i] as TCustomEdit).Tag = 0) and (Trim((Components[i] as TCustomEdit).Text) = '') then
+      begin
+        Result  :=  False;
+        Validado(TCustomEdit(Components[i]));
+        Break;
+      end;
 end;
 
 procedure TForm1.btbuscarClick(Sender: TObject);
@@ -299,12 +189,16 @@ begin
 
       Anexos.Add(ExtractFilePath(ParamStr(0)) + 'cadastrosimples.xml');
       EnviarEmail.Enviar(Destinatarios, 'Cadastro realizado', corpo_e, Anexos);
+
+      LimparDados;
+      ModoEdicao();
     finally
       stXml.Free;
       stDestinatarios.Free;
       EnviarEmail.Free;
       Destinatarios.Free;
       Anexos.Free;
+      FCadastroSimples.Free;
     end;
   end;
 end;
@@ -312,6 +206,8 @@ end;
 procedure TForm1.btnovoClick(Sender: TObject);
 begin
   FCadastroSimples  :=  TCadastroSimples.Create;
+  LimparDados;
+  ModoEdicao(True);
   pnlPrincipal.Enabled  :=  true;
   ednome.SetFocus;
 end;
@@ -366,6 +262,15 @@ begin
   FCadastroSimples.Identidade :=  edrg.Text;
 end;
 
+procedure TForm1.LimparDados;
+var
+  i: integer;
+begin
+  for i := 0 to ComponentCount - 1 do
+    if Components[i] is TCustomEdit then
+      (Components[i] as TCustomEdit).Clear;
+end;
+
 procedure TForm1.mecepChange(Sender: TObject);
 begin
   FCadastroSimples.Cep  :=  mecep.Text;
@@ -385,6 +290,11 @@ end;
 procedure TForm1.mefone1Change(Sender: TObject);
 begin
   FCadastroSimples.Telefone :=  mefone1.Text;
+end;
+
+procedure TForm1.ModoEdicao(const Sim: boolean);
+begin
+  pnlPrincipal.Enabled  :=  Sim;
 end;
 
 end.

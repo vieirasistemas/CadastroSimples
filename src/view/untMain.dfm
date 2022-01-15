@@ -226,10 +226,12 @@ object Form1: TForm1
       ParentFont = False
     end
     object ednome: TEdit
-      Left = 78
+      Left = 81
       Top = 9
-      Width = 483
+      Width = 488
       Height = 24
+      HelpType = htKeyword
+      HelpKeyword = 'Nome'
       CharCase = ecUpperCase
       Font.Charset = ANSI_CHARSET
       Font.Color = clBlack
@@ -245,6 +247,8 @@ object Form1: TForm1
       Top = 39
       Width = 98
       Height = 24
+      HelpType = htKeyword
+      HelpKeyword = 'CPF'
       EditMask = '999.999.999-99;0;_'
       Font.Charset = ANSI_CHARSET
       Font.Color = clBlue
@@ -262,6 +266,8 @@ object Form1: TForm1
       Top = 39
       Width = 131
       Height = 24
+      HelpType = htKeyword
+      HelpKeyword = 'RG'
       CharCase = ecUpperCase
       Font.Charset = ANSI_CHARSET
       Font.Color = clBlue
@@ -273,10 +279,12 @@ object Form1: TForm1
       OnChange = edrgChange
     end
     object mefone1: TMaskEdit
-      Left = 464
+      Left = 466
       Top = 39
       Width = 103
       Height = 24
+      HelpType = htKeyword
+      HelpKeyword = 'Telefone'
       EditMask = '(99)#9999-9999;0;_'
       Font.Charset = ANSI_CHARSET
       Font.Color = clBlue
@@ -294,6 +302,8 @@ object Form1: TForm1
       Top = 69
       Width = 310
       Height = 24
+      HelpType = htKeyword
+      HelpKeyword = 'E-mail'
       CharCase = ecLowerCase
       Font.Charset = ANSI_CHARSET
       Font.Color = clBlue
@@ -309,6 +319,8 @@ object Form1: TForm1
       Top = 69
       Width = 81
       Height = 24
+      HelpType = htKeyword
+      HelpKeyword = 'CEP'
       EditMask = '99.999.999;0;_'
       Font.Charset = ANSI_CHARSET
       Font.Color = clBlue
@@ -327,6 +339,8 @@ object Form1: TForm1
       Top = 99
       Width = 488
       Height = 24
+      HelpType = htKeyword
+      HelpKeyword = 'Endere'#231'o'
       CharCase = ecUpperCase
       Font.Charset = ANSI_CHARSET
       Font.Color = clBlue
@@ -342,6 +356,8 @@ object Form1: TForm1
       Top = 158
       Width = 488
       Height = 24
+      HelpType = htKeyword
+      HelpKeyword = 'Bairro'
       CharCase = ecUpperCase
       Font.Charset = ANSI_CHARSET
       Font.Color = clBlue
@@ -357,6 +373,8 @@ object Form1: TForm1
       Top = 188
       Width = 312
       Height = 24
+      HelpType = htKeyword
+      HelpKeyword = 'Cidade'
       CharCase = ecUpperCase
       Font.Charset = ANSI_CHARSET
       Font.Color = clBlue
@@ -372,6 +390,8 @@ object Form1: TForm1
       Top = 128
       Width = 48
       Height = 24
+      HelpType = htKeyword
+      HelpKeyword = 'Numero'
       CharCase = ecUpperCase
       Font.Charset = ANSI_CHARSET
       Font.Color = clBlue
@@ -383,10 +403,13 @@ object Form1: TForm1
       OnChange = ednrChange
     end
     object edcomplemento: TEdit
+      Tag = 99
       Left = 217
       Top = 128
       Width = 352
       Height = 24
+      HelpType = htKeyword
+      HelpKeyword = 'Complemento'
       CharCase = ecUpperCase
       Font.Charset = ANSI_CHARSET
       Font.Color = clBlue
@@ -402,6 +425,8 @@ object Form1: TForm1
       Top = 188
       Width = 48
       Height = 24
+      HelpType = htKeyword
+      HelpKeyword = 'Estado'
       CharCase = ecUpperCase
       Font.Charset = ANSI_CHARSET
       Font.Color = clBlue
@@ -417,6 +442,8 @@ object Form1: TForm1
       Top = 220
       Width = 312
       Height = 24
+      HelpType = htKeyword
+      HelpKeyword = 'Pa'#237's'
       CharCase = ecUpperCase
       Font.Charset = ANSI_CHARSET
       Font.Color = clBlue
@@ -460,7 +487,7 @@ object Form1: TForm1
       OnClick = btgravarClick
     end
     object btbuscar: TBitBtn
-      Left = 543
+      Left = 544
       Top = 69
       Width = 25
       Height = 24
